@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Operaciones | CMAC Huancayo</title>
+
+<link rel="stylesheet" href="/css/operaciones.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="logo-section">
+
+            <img
+                src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
+                alt="Caja Huancayo"
+                class="logo">
+
+        </div>
+
+        <nav>
+
+            <a href="/admin">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/core-creditos">
+                <i class="fas fa-landmark"></i>
+                Core Créditos
+            </a>
+
+            <a href="/clientes">
+                <i class="fas fa-users"></i>
+                Clientes
+            </a>
+
+            <a href="/operaciones" class="active">
+                <i class="fas fa-money-check-dollar"></i>
+                Operaciones
+            </a>
+
+            <a href="/reportes">
+                <i class="fas fa-file-lines"></i>
+                Reportes
+            </a>
+
+            <a href="/configuracion">
+                <i class="fas fa-gear"></i>
+                Configuración
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main-content">
+
+        <header class="header">
+
+            <div>
+
+                <h1>Centro de Operaciones</h1>
+
+                <p>
+                    Gestión de movimientos, pagos y transferencias
+                </p>
+
+            </div>
+
+            <div class="user-box">
+
+                <img
+                    src="/img/user.png"
+                    alt="Administrador">
+
+                <div>
+
+                    <strong>Administrador</strong>
+
+                    <span>CMAC Huancayo</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+
+                <i class="fas fa-arrow-right-arrow-left"></i>
+
+                <h3>Transferencias</h3>
+
+                <h2>{{ total_transferencias }}</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-file-invoice-dollar"></i>
+
+                <h3>Pagos</h3>
+
+                <h2>{{ total_pagos }}</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-money-bill-transfer"></i>
+
+                <h3>Movimientos</h3>
+
+                <h2>{{ total_movimientos }}</h2>
+
+            </div>
+
+        </section>
+
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <h3>
+                    Últimas Operaciones
+                </h3>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar operación...">
+
+            </div>
+
+            <table id="tablaOperaciones">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Monto</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for movimiento in movimientos %}
+
+                    <tr>
+
+                        <td>
+                            {{ movimiento.id }}
+                        </td>
+
+                        <td>
+                            {{ movimiento.descripcion }}
+                        </td>
+
+                        <td>
+                            S/ {{ movimiento.monto }}
+                        </td>
+
+                        <td>
+
+                            {% if movimiento.tipo == "entrada" %}
+
+                            <span class="badge entrada">
+                                Entrada
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge salida">
+                                Salida
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ movimiento.fecha }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/js/operaciones.js"></script>
+
+</body>
+
+</html>

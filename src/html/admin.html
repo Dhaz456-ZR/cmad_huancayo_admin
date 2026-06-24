@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMAC Huancayo - Dashboard Administrativo</title>
+
+    <link rel="stylesheet" href="/css/admin.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo-section">
+
+            <img
+                src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
+                alt="Caja Huancayo"
+                class="logo">
+
+            <div>
+                <h2>CMAC</h2>
+                <span>HUANCAYO ADMIN</span>
+            </div>
+
+        </div>
+
+        <nav>
+
+            <a href="/admin" class="active">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/core-creditos">
+                <i class="fas fa-landmark"></i>
+                Core Créditos
+            </a>
+
+            <a href="/clientes">
+                <i class="fas fa-users"></i>
+                Clientes
+            </a>
+
+            <a href="/operaciones">
+                <i class="fas fa-money-check-dollar"></i>
+                Operaciones
+            </a>
+
+            <a href="/reportes">
+                <i class="fas fa-file-lines"></i>
+                Reportes
+            </a>
+
+            <a href="/configuracion">
+                <i class="fas fa-gear"></i>
+                Configuración
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div>
+
+                <h1>Dashboard Administrativo</h1>
+
+                <p>
+                    Sistema Financiero Caja Huancayo
+                </p>
+
+            </div>
+
+            <div class="header-right">
+
+                <button id="bellBtn">
+                    <i class="fas fa-bell"></i>
+                </button>
+
+                <div class="user-info">
+
+                    <img
+                        src="/img/user.png"
+                        alt="Administrador">
+
+                    <div>
+
+                        <strong>
+                            Administrador
+                        </strong>
+
+                        <span>
+                            Sistema Activo
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- KPIs -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <i class="fas fa-users card-icon"></i>
+
+                <h3>Total Clientes</h3>
+
+                <h2>
+                    {{ total_clientes }}
+                </h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-file-signature card-icon"></i>
+
+                <h3>Total Créditos</h3>
+
+                <h2>
+                    {{ total_creditos }}
+                </h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-money-bill-wave card-icon"></i>
+
+                <h3>Cartera Vigente</h3>
+
+                <h2>
+                    S/ {{ vigente }}
+                </h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-triangle-exclamation card-icon"></i>
+
+                <h3>Cartera Vencida</h3>
+
+                <h2>
+                    S/ {{ vencida }}
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- GRAFICOS -->
+
+        <section class="charts">
+
+            <div class="chart-card">
+
+                <h3>
+                    Cumplimiento de Meta
+                </h3>
+
+                <canvas id="metaChart"></canvas>
+
+            </div>
+
+            <div class="chart-card">
+
+                <h3>
+                    Cartera por Calificación
+                </h3>
+
+                <canvas id="calificacionChart"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- SEGUNDA FILA -->
+
+        <section class="charts">
+
+            <div class="chart-card">
+
+                <h3>
+                    Cartera Vencida por Tipo de Producto
+                </h3>
+
+                <canvas id="productoChart"></canvas>
+
+            </div>
+
+            <div class="chart-card">
+
+                <h3>
+                    Estado General del Sistema
+                </h3>
+
+                <div class="status-box">
+
+                    <div class="status-item">
+                        <span>Base de Datos</span>
+                        <strong class="online">
+                            Conectada
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span>PostgreSQL</span>
+                        <strong class="online">
+                            Activo
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span>MySQL</span>
+                        <strong class="online">
+                            Activo
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span>Core Créditos</span>
+                        <strong class="online">
+                            Operativo
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- TABLA -->
+
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <h3>
+                    Últimos Créditos Registrados
+                </h3>
+
+                <a href="/core-creditos" class="btn-core">
+                    Ver Core Créditos
+                </a>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>DNI</th>
+                        <th>Tipo</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for credito in creditos %}
+
+                    <tr>
+
+                        <td>
+                            {{ credito.id }}
+                        </td>
+
+                        <td>
+                            {{ credito.usuario.nombre }}
+                        </td>
+
+                        <td>
+                            {{ credito.usuario.dni }}
+                        </td>
+
+                        <td>
+                            {{ credito.tipo_credito }}
+                        </td>
+
+                        <td>
+                            S/ {{ credito.monto_total }}
+                        </td>
+
+                        <td>
+
+                            {% if credito.estado == "Aprobado" %}
+
+                            <span class="badge aprobado">
+                                {{ credito.estado }}
+                            </span>
+
+                            {% elif credito.estado == "Pendiente" %}
+
+                            <span class="badge pendiente">
+                                {{ credito.estado }}
+                            </span>
+
+                            {% elif credito.estado == "Rechazado" %}
+
+                            <span class="badge rechazado">
+                                {{ credito.estado }}
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge desembolsado">
+                                {{ credito.estado }}
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div id="dashboard-data"
+     data-clientes="{{ total_clientes }}"
+     data-creditos="{{ total_creditos }}"
+     data-vigente="{{ vigente }}"
+     data-vencida="{{ vencida }}"
+     data-normal="{{ normal }}"
+     data-cpp="{{ cpp }}"
+     data-deficiente="{{ deficiente }}"
+     data-dudoso="{{ dudoso }}"
+     data-perdida="{{ perdida }}">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/js/admin.js"></script>
+
+</body>
+</html>

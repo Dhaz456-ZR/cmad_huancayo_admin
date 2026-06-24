@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Configuración | CMAC Huancayo</title>
+
+<link rel="stylesheet" href="/css/configuracion.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="logo-section">
+
+            <img
+            src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
+            class="logo">
+
+        </div>
+
+        <nav>
+
+            <a href="/admin">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/core-creditos">
+                <i class="fas fa-landmark"></i>
+                Core Créditos
+            </a>
+
+            <a href="/clientes">
+                <i class="fas fa-users"></i>
+                Clientes
+            </a>
+
+            <a href="/operaciones">
+                <i class="fas fa-money-check-dollar"></i>
+                Operaciones
+            </a>
+
+            <a href="/reportes">
+                <i class="fas fa-file-lines"></i>
+                Reportes
+            </a>
+
+            <a href="/configuracion" class="active">
+                <i class="fas fa-gear"></i>
+                Configuración
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main-content">
+
+        <header class="header">
+
+            <div>
+
+                <h1>Configuración del Sistema</h1>
+
+                <p>
+                    Administración general de la plataforma
+                </p>
+
+            </div>
+
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+
+                <i class="fas fa-database"></i>
+
+                <h3>MySQL</h3>
+
+                <strong>Conectado</strong>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-server"></i>
+
+                <h3>PostgreSQL</h3>
+
+                <strong>Conectado</strong>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-users"></i>
+
+                <h3>Usuarios</h3>
+
+                <strong>{{ total_clientes }}</strong>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fas fa-file-signature"></i>
+
+                <h3>Créditos</h3>
+
+                <strong>{{ total_creditos }}</strong>
+
+            </div>
+
+        </section>
+
+        <section class="config-box">
+
+            <h2>Herramientas Administrativas</h2>
+
+            <div class="buttons">
+
+                <button id="themeBtn">
+                    🌙 Cambiar Tema
+                </button>
+
+                <button id="syncBtn">
+                    🔄 Sincronizar PostgreSQL
+                </button>
+
+                <button id="backupBtn">
+                    💾 Crear Backup
+                </button>
+
+                <button id="refreshBtn">
+                    ♻ Actualizar Sistema
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="server-box">
+
+            <h2>Información del Sistema</h2>
+
+            <table>
+
+                <tr>
+                    <td>Versión</td>
+                    <td>CMAD 1.0</td>
+                </tr>
+
+                <tr>
+                    <td>Estado</td>
+                    <td>Activo</td>
+                </tr>
+
+                <tr>
+                    <td>Servidor</td>
+                    <td>FastAPI</td>
+                </tr>
+
+                <tr>
+                    <td>Base Principal</td>
+                    <td>MySQL</td>
+                </tr>
+
+                <tr>
+                    <td>Base Alterna</td>
+                    <td>PostgreSQL</td>
+                </tr>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/js/configuracion.js"></script>
+
+</body>
+
+</html>

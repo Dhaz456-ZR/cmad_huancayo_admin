@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Clientes | CMAC Huancayo</title>
+
+<link rel="stylesheet" href="/css/clientes.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="logo-section">
+
+            <img
+                src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
+                alt="Caja Huancayo"
+                class="logo">
+
+        </div>
+
+        <nav>
+
+            <a href="/admin">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/core-creditos">
+                <i class="fas fa-landmark"></i>
+                Core Créditos
+            </a>
+
+            <a href="/clientes" class="active">
+                <i class="fas fa-users"></i>
+                Clientes
+            </a>
+
+            <a href="/operaciones">
+                <i class="fas fa-money-check-dollar"></i>
+                Operaciones
+            </a>
+
+            <a href="/reportes">
+                <i class="fas fa-file-lines"></i>
+                Reportes
+            </a>
+
+            <a href="/configuracion">
+                <i class="fas fa-gear"></i>
+                Configuración
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main-content">
+
+        <header class="header">
+
+            <div>
+                <h1>Clientes Registrados</h1>
+                <p>Gestión y consulta de clientes</p>
+            </div>
+
+            <div class="user-box">
+
+                <img src="/img/user.png">
+
+                <div>
+                    <strong>Administrador</strong>
+                    <span>CMAC Huancayo</span>
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h3>Total Clientes</h3>
+                <h2>{{ total_clientes }}</h2>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-user-check"></i>
+                <h3>Verificados</h3>
+                <h2>{{ verificados }}</h2>
+            </div>
+
+        </section>
+
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <h3>Lista de Clientes</h3>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar cliente...">
+
+            </div>
+
+            <table id="tablaClientes">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Tarjeta</th>
+                        <th>Correo</th>
+                        <th>Estado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for usuario in usuarios %}
+
+                    <tr>
+
+                        <td>{{ usuario.id }}</td>
+
+                        <td>{{ usuario.nombre }}</td>
+
+                        <td>{{ usuario.dni }}</td>
+
+                        <td>{{ usuario.tarjeta }}</td>
+
+                        <td>{{ usuario.correo }}</td>
+
+                        <td>
+                            <span class="estado">
+                                {{ usuario.estado }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/js/clientes.js"></script>
+
+</body>
+</html>
