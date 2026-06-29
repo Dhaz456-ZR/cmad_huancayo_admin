@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMAC Huancayo | Panel Administrativo</title>
+
+    <link rel="stylesheet" href="/css/login_admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="background-overlay"></div>
+
+<div class="login-container">
+
+    <!-- PANEL IZQUIERDO -->
+    <div class="left-panel">
+        <img src="/img/caja-huancayo-logo-png_seeklogo-437667.png" class="logo">
+        <h1>CMAC HUANCAYO</h1>
+        <h2>Panel Administrativo</h2>
+        <p>
+            Plataforma exclusiva para personal autorizado.
+            Acceda utilizando sus credenciales institucionales.
+        </p>
+        <div class="security-box">
+            <h3>Seguridad</h3>
+            <ul>
+                <li>✔ Conexión Segura SSL/TLS</li>
+                <li>✔ Contraseñas Encriptadas</li>
+                <li>✔ Protección contra Bots</li>
+                <li>✔ Control de Sesiones</li>
+                <li>✔ Auditoría de Accesos</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="right-panel">
+        <div class="login-card">
+            <div class="card-header">
+                <img src="/img/user.png" class="admin-icon">
+                <h2>Iniciar Sesión</h2>
+                <p>Acceso exclusivo para administradores</p>
+            </div>
+
+            <!-- FORMULARIO DE LOGIN -->
+            <form id="loginForm" method="POST" action="/login-admin">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input
+                        type="text"
+                        name="usuario"
+                        id="usuario"
+                        placeholder="Ingrese su usuario"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Ingrese su contraseña"
+                            required
+                        >
+                        <button type="button" id="togglePassword">👁</button>
+                    </div>
+                </div>
+
+                <div class="remember">
+                    <label>
+                        <input type="checkbox" id="remember">
+                        Mantener sesión iniciada
+                    </label>
+                </div>
+
+                <!-- CAPTCHA -->
+                <div class="captcha-box">
+                    <div class="captcha-header">
+                        <span>Verificación de Seguridad</span>
+                        <button type="button" id="refreshCaptcha">↻</button>
+                    </div>
+                    <div id="captchaQuestion" class="captcha-question">5 + 4 = ?</div>
+                    <input type="number" id="captchaInput" placeholder="Respuesta" required>
+                </div>
+
+                <button class="login-btn" type="submit">
+                    Ingresar al Sistema
+                </button>
+
+                <div id="loading" class="loading">Verificando credenciales...</div>
+
+                <!-- MENSAJE DE ERROR -->
+                {% if error %}
+                <div id="mensaje" class="mensaje error">
+                    {{ error }}
+                </div>
+                {% else %}
+                <div id="mensaje" class="mensaje"></div>
+                {% endif %}
+            </form>
+
+            <div class="extra-options">
+                <a href="#">¿Olvidó su contraseña?</a>
+            </div>
+
+            <div class="footer">
+                © 2026 CMAC Huancayo<br>
+                Sistema Administrativo Seguro
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/login_admin.js"></script>
+
+<script>
+    // Mostrar mensaje de error si existe
+    document.addEventListener('DOMContentLoaded', function() {
+        const mensaje = document.getElementById('mensaje');
+        if (mensaje && mensaje.textContent.trim() !== '') {
+            mensaje.style.display = 'block';
+            setTimeout(function() {
+                mensaje.style.opacity = '0';
+                setTimeout(function() {
+                    mensaje.style.display = 'none';
+                }, 500);
+            }, 5000);
+        }
+    });
+</script>
+
+</body>
+</html>
