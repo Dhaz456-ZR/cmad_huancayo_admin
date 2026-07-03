@@ -1,378 +1,224 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMAC Huancayo - Dashboard Administrativo</title>
-
-    <link rel="stylesheet" href="/css/admin.css">
-
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Panel Administrativo</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="icon" type="image/png" href="/img/Logo.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-
 <body>
 
-<div class="dashboard">
+    <div class="admin-container">
 
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="logo-section">
-
-            <img
-                src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
-                alt="Caja Huancayo"
-                class="logo">
-
-            <div>
-                <h2>CMAC</h2>
-                <span>HUANCAYO ADMIN</span>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="/img/caja-huancayo-logo-png_seeklogo-437667.png" alt="CMAC Huancayo" class="logo" />
+                <span class="brand-text">Panel Admin</span>
             </div>
-
-        </div>
-
-        <nav>
-
-            <a href="/admin" class="active">
-                <i class="fas fa-chart-line"></i>
-                Dashboard
-            </a>
-
-            <a href="/core-creditos">
-                <i class="fas fa-landmark"></i>
-                Core Créditos
-            </a>
-
-            <a href="/clientes">
-                <i class="fas fa-users"></i>
-                Clientes
-            </a>
-
-            <a href="/operaciones">
-                <i class="fas fa-money-check-dollar"></i>
-                Operaciones
-            </a>
-
-            <a href="/reportes">
-                <i class="fas fa-file-lines"></i>
-                Reportes
-            </a>
-
-            <a href="/configuracion">
-                <i class="fas fa-gear"></i>
-                Configuración
-            </a>
-
-        </nav>
-
-    </aside>
-
-    <!-- CONTENIDO -->
-
-    <main class="main-content">
-
-        <!-- HEADER -->
-
-        <header class="header">
-
-            <div>
-
-                <h1>Dashboard Administrativo</h1>
-
-                <p>
-                    Sistema Financiero Caja Huancayo
-                </p>
-
-            </div>
-
-            <div class="header-right">
-
-                <button id="bellBtn">
-                    <i class="fas fa-bell"></i>
-                </button>
-
-                <div class="user-info">
-
-                    <img
-                        src="/img/user.png"
-                        alt="Administrador">
-
-                    <div>
-
-                        <strong>
-                            Administrador
-                        </strong>
-
-                        <span>
-                            Sistema Activo
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-        <!-- KPIs -->
-
-        <section class="cards">
-
-            <div class="card">
-
-                <i class="fas fa-users card-icon"></i>
-
-                <h3>Total Clientes</h3>
-
-                <h2>
-                    {{ total_clientes }}
-                </h2>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-file-signature card-icon"></i>
-
-                <h3>Total Créditos</h3>
-
-                <h2>
-                    {{ total_creditos }}
-                </h2>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-money-bill-wave card-icon"></i>
-
-                <h3>Cartera Vigente</h3>
-
-                <h2>
-                    S/ {{ vigente }}
-                </h2>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-triangle-exclamation card-icon"></i>
-
-                <h3>Cartera Vencida</h3>
-
-                <h2>
-                    S/ {{ vencida }}
-                </h2>
-
-            </div>
-
-        </section>
-
-        <!-- GRAFICOS -->
-
-        <section class="charts">
-
-            <div class="chart-card">
-
-                <h3>
-                    Cumplimiento de Meta
-                </h3>
-
-                <canvas id="metaChart"></canvas>
-
-            </div>
-
-            <div class="chart-card">
-
-                <h3>
-                    Cartera por Calificación
-                </h3>
-
-                <canvas id="calificacionChart"></canvas>
-
-            </div>
-
-        </section>
-
-        <!-- SEGUNDA FILA -->
-
-        <section class="charts">
-
-            <div class="chart-card">
-
-                <h3>
-                    Cartera Vencida por Tipo de Producto
-                </h3>
-
-                <canvas id="productoChart"></canvas>
-
-            </div>
-
-            <div class="chart-card">
-
-                <h3>
-                    Estado General del Sistema
-                </h3>
-
-                <div class="status-box">
-
-                    <div class="status-item">
-                        <span>Base de Datos</span>
-                        <strong class="online">
-                            Conectada
-                        </strong>
-                    </div>
-
-                    <div class="status-item">
-                        <span>PostgreSQL</span>
-                        <strong class="online">
-                            Activo
-                        </strong>
-                    </div>
-
-                    <div class="status-item">
-                        <span>MySQL</span>
-                        <strong class="online">
-                            Activo
-                        </strong>
-                    </div>
-
-                    <div class="status-item">
-                        <span>Core Créditos</span>
-                        <strong class="online">
-                            Operativo
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- TABLA -->
-
-        <section class="table-card">
-
-            <div class="table-header">
-
-                <h3>
-                    Últimos Créditos Registrados
-                </h3>
-
-                <a href="/core-creditos" class="btn-core">
-                    Ver Core Créditos
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
                 </a>
+                <a href="/clientes" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="/core-creditos" class="nav-item">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Créditos</span>
+                </a>
+                <a href="/transferencias-admin" class="nav-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transferencias</span>
+                </a>
+                <a href="/pagos-admin" class="nav-item">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Pagos</span>
+                </a>
+                <a href="/configuracion" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
 
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                    <p class="header-subtitle">Resumen general del sistema</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <span class="admin-name">{{ admin_nombre }}</span>
+                        <span class="admin-role">{{ admin_rol }}</span>
+                    </div>
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- STATS CARDS -->
+            <div class="stats-grid-premium">
+                <div class="stat-card-premium blue">
+                    <div class="stat-icon-wrapper"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" id="totalClientes">0</div>
+                    <div class="stat-label">Total Clientes</div>
+                    <div class="stat-trend"><i class="fas fa-users"></i></div>
+                </div>
+                <div class="stat-card-premium green">
+                    <div class="stat-icon-wrapper"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number" id="verificados">0</div>
+                    <div class="stat-label">Verificados</div>
+                    <div class="stat-trend"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="stat-card-premium red">
+                    <div class="stat-icon-wrapper"><i class="fas fa-ban"></i></div>
+                    <div class="stat-number" id="bloqueados">0</div>
+                    <div class="stat-label">Bloqueados</div>
+                    <div class="stat-trend"><i class="fas fa-ban"></i></div>
+                </div>
+                <div class="stat-card-premium yellow">
+                    <div class="stat-icon-wrapper"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-number" id="registradosHoy">0</div>
+                    <div class="stat-label">Registrados hoy</div>
+                    <div class="stat-trend"><i class="fas fa-user-plus"></i></div>
+                </div>
             </div>
 
-            <table>
+            <!-- QUICK ACTIONS -->
+            <div class="quick-actions">
+                <h3>Acciones rápidas</h3>
+                <div class="actions-grid">
+                    <a href="/clientes" class="action-item">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Ver Clientes</span>
+                    </a>
+                    <a href="/core-creditos" class="action-item">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Gestionar Créditos</span>
+                    </a>
+                    <a href="#" class="action-item">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <a href="/configuracion" class="action-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </div>
+            </div>
 
-                <thead>
+            <!-- ÚLTIMAS ACTIVIDADES -->
+            <div class="movements-section">
+                <div class="section-header">
+                    <h3>Últimas actividades</h3>
+                    <span class="view-all" id="totalActividades">0 clientes</span>
+                </div>
+                <div class="movements-list" id="movementsList">
+                    <div class="movement-empty">
+                        <i class="fas fa-inbox"></i>
+                        <p>Cargando actividades...</p>
+                    </div>
+                </div>
+            </div>
 
-                    <tr>
+        </main>
+    </div>
 
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>DNI</th>
-                        <th>Tipo</th>
-                        <th>Monto</th>
-                        <th>Estado</th>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/admin.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
 
-                    </tr>
+        // ===== CARGAR ESTADÍSTICAS =====
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/clientes/estadisticas');
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('totalClientes').textContent = result.data.total;
+                    document.getElementById('verificados').textContent = result.data.verificados;
+                    document.getElementById('bloqueados').textContent = result.data.bloqueados;
+                    document.getElementById('registradosHoy').textContent = result.data.registrados_hoy;
+                }
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
 
-                </thead>
+        // ===== CARGAR ACTIVIDADES RECIENTES =====
+        async function loadRecentActivities() {
+            try {
+                const list = document.getElementById('movementsList');
+                const response = await fetch('/api/clientes?limit=5');
+                const result = await response.json();
+                
+                const totalEl = document.getElementById('totalActividades');
+                
+                if (result.success && result.data.length > 0) {
+                    if (totalEl) totalEl.textContent = `${result.total} clientes totales`;
+                    
+                    list.innerHTML = result.data.map(cliente => `
+                        <div class="movement-item">
+                            <div class="movement-icon entry">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="movement-info">
+                                <span class="movement-desc">${cliente.nombre}</span>
+                                <span class="movement-date">DNI: ${cliente.dni} • ${cliente.fecha_creacion_formateada || 'Nuevo'}</span>
+                            </div>
+                            <div class="movement-status">
+                                <span class="badge badge-${cliente.estado.toLowerCase()}">${cliente.estado}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = `
+                        <div class="movement-empty">
+                            <i class="fas fa-inbox"></i>
+                            <p>No hay clientes registrados</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error cargando actividades:', error);
+                document.getElementById('movementsList').innerHTML = `
+                    <div class="movement-empty">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Error al cargar actividades</p>
+                    </div>
+                `;
+            }
+        }
 
-                <tbody>
+        // ===== INICIALIZAR =====
+        loadDashboardStats();
+        loadRecentActivities();
 
-                    {% for credito in creditos %}
+        // Recargar cada 30 segundos
+        setInterval(() => {
+            loadDashboardStats();
+            loadRecentActivities();
+        }, 30000);
 
-                    <tr>
-
-                        <td>
-                            {{ credito.id }}
-                        </td>
-
-                        <td>
-                            {{ credito.usuario.nombre }}
-                        </td>
-
-                        <td>
-                            {{ credito.usuario.dni }}
-                        </td>
-
-                        <td>
-                            {{ credito.tipo_credito }}
-                        </td>
-
-                        <td>
-                            S/ {{ credito.monto_total }}
-                        </td>
-
-                        <td>
-
-                            {% if credito.estado == "Aprobado" %}
-
-                            <span class="badge aprobado">
-                                {{ credito.estado }}
-                            </span>
-
-                            {% elif credito.estado == "Pendiente" %}
-
-                            <span class="badge pendiente">
-                                {{ credito.estado }}
-                            </span>
-
-                            {% elif credito.estado == "Rechazado" %}
-
-                            <span class="badge rechazado">
-                                {{ credito.estado }}
-                            </span>
-
-                            {% else %}
-
-                            <span class="badge desembolsado">
-                                {{ credito.estado }}
-                            </span>
-
-                            {% endif %}
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-    </main>
-
-</div>
-
-<div id="dashboard-data"
-     data-clientes="{{ total_clientes }}"
-     data-creditos="{{ total_creditos }}"
-     data-vigente="{{ vigente }}"
-     data-vencida="{{ vencida }}"
-     data-normal="{{ normal }}"
-     data-cpp="{{ cpp }}"
-     data-deficiente="{{ deficiente }}"
-     data-dudoso="{{ dudoso }}"
-     data-perdida="{{ perdida }}">
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="/js/admin.js"></script>
-
+    });
+    </script>
 </body>
 </html>

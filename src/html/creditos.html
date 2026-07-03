@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créditos | Panel Administrativo</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="icon" type="image/png" href="/img/Logo.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <div class="admin-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="/img/caja-huancayo-logo-png_secretos.png" alt="CMAC Huancayo" class="logo" />
+                <span class="brand-text">Panel Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/clientes" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="/core-creditos" class="nav-item active">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Créditos</span>
+                </a>
+                <a href="/transferencias-admin" class="nav-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transferencias</span>
+                </a>
+                <a href="/pagos-admin" class="nav-item">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Pagos</span>
+                </a>
+                <a href="/configuracion" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <header class="header">
+                <div class="header-left">
+                    <h1>Gestión de Créditos</h1>
+                    <p class="header-subtitle">Administra los créditos de los clientes</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <span class="admin-name">{{ admin_nombre }}</span>
+                        <span class="admin-role">{{ admin_rol }}</span>
+                    </div>
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- STATS -->
+            <div class="stats-grid-premium">
+                <div class="stat-card-premium blue">
+                    <div class="stat-icon-wrapper"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div class="stat-number" id="totalCreditos">0</div>
+                    <div class="stat-label">Total Créditos</div>
+                    <div class="stat-trend"><i class="fas fa-hand-holding-usd"></i></div>
+                </div>
+                <div class="stat-card-premium green">
+                    <div class="stat-icon-wrapper"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number" id="creditosAprobados">0</div>
+                    <div class="stat-label">Aprobados</div>
+                    <div class="stat-trend"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="stat-card-premium yellow">
+                    <div class="stat-icon-wrapper"><i class="fas fa-clock"></i></div>
+                    <div class="stat-number" id="creditosPendientes">0</div>
+                    <div class="stat-label">Pendientes</div>
+                    <div class="stat-trend"><i class="fas fa-clock"></i></div>
+                </div>
+                <div class="stat-card-premium red">
+                    <div class="stat-icon-wrapper"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-number" id="creditosRechazados">0</div>
+                    <div class="stat-label">Rechazados</div>
+                    <div class="stat-trend"><i class="fas fa-times-circle"></i></div>
+                </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="controls-premium">
+                <div class="search-premium">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar por cliente o tipo de crédito..." />
+                </div>
+                <button class="btn-refresh-premium" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+
+            <!-- CREDITOS -->
+            <div id="creditosList">
+                <div class="loading-premium">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Cargando créditos...
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/admin.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const creditosList = document.getElementById('creditosList');
+        const searchInput = document.getElementById('searchInput');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        const totalCreditosEl = document.getElementById('totalCreditos');
+        const creditosAprobadosEl = document.getElementById('creditosAprobados');
+        const creditosPendientesEl = document.getElementById('creditosPendientes');
+        const creditosRechazadosEl = document.getElementById('creditosRechazados');
+
+        function getStatusClass(estado) {
+            const map = {
+                'Al día': 'al-dia',
+                'Pendiente': 'pendiente',
+                'Aprobado': 'aprobado',
+                'Rechazado': 'rechazado',
+                'Desembolsado': 'desembolsado'
+            };
+            return map[estado] || 'pendiente';
+        }
+
+        function getInitials(nombre) {
+            return nombre ? nombre.charAt(0).toUpperCase() : '?';
+        }
+
+        function getActions(credito) {
+            let html = '';
+            if (credito.estado === 'Pendiente') {
+                html = `
+                    <button class="btn aprobar" onclick="aprobarCredito(${credito.id})" title="Aprobar">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn rechazar" onclick="rechazarCredito(${credito.id})" title="Rechazar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+            } else if (credito.estado === 'Aprobado') {
+                html = `
+                    <button class="btn desembolsar" onclick="desembolsarCredito(${credito.id})" title="Desembolsar">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </button>
+                `;
+            } else {
+                html = `<span class="no-actions"><i class="fas fa-minus"></i></span>`;
+            }
+            return html;
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/creditos/estadisticas');
+                const result = await response.json();
+                
+                if (result.success) {
+                    totalCreditosEl.textContent = result.data.total;
+                    creditosAprobadosEl.textContent = result.data.aprobados;
+                    creditosPendientesEl.textContent = result.data.pendientes;
+                    creditosRechazadosEl.textContent = result.data.rechazados;
+                }
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        async function loadCreditos(search = '') {
+            try {
+                const url = `/api/creditos${search ? `?search=${encodeURIComponent(search)}` : ''}`;
+                
+                creditosList.innerHTML = `
+                    <div class="loading-premium">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Cargando créditos...
+                    </div>
+                `;
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Error al cargar créditos');
+                }
+
+                const creditos = result.data;
+
+                if (creditos.length === 0) {
+                    creditosList.innerHTML = `
+                        <div class="empty-premium">
+                            <i class="fas fa-inbox"></i>
+                            <p>No hay créditos registrados</p>
+                        </div>
+                    `;
+                } else {
+                    creditosList.innerHTML = creditos.map(credito => {
+                        const progreso = credito.cuotas_totales > 0 ? 
+                            Math.round((credito.cuotas_pagadas / credito.cuotas_totales) * 100) : 0;
+                        const statusClass = getStatusClass(credito.estado);
+                        
+                        return `
+                        <div class="credit-card-premium">
+                            <div class="card-top">
+                                <div class="user-info">
+                                    <div class="user-avatar">${getInitials(credito.cliente_nombre)}</div>
+                                    <div>
+                                        <div class="user-name">${credito.cliente_nombre || 'N/A'}</div>
+                                        <div class="user-id">ID: ${credito.id}</div>
+                                    </div>
+                                </div>
+                                <span class="status-badge ${statusClass}">${credito.estado}</span>
+                            </div>
+                            <div class="card-middle">
+                                <div>
+                                    <div class="info-label">Tipo de crédito</div>
+                                    <div class="info-value">${credito.tipo_credito}</div>
+                                </div>
+                                <div>
+                                    <div class="info-label">Monto total</div>
+                                    <div class="info-value monto">S/ ${credito.monto_total}</div>
+                                </div>
+                                <div>
+                                    <div class="info-label">Cuota mensual</div>
+                                    <div class="info-value cuota">S/ ${credito.cuota_mensual}</div>
+                                </div>
+                                <div>
+                                    <div class="info-label">Cuotas pagadas</div>
+                                    <div class="info-value">${credito.cuotas_pagadas}/${credito.cuotas_totales}</div>
+                                </div>
+                            </div>
+                            <div class="card-bottom">
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill ${statusClass}" style="width: ${progreso}%;"></div>
+                                    </div>
+                                    <span class="progress-text">${progreso}%</span>
+                                </div>
+                                <div class="card-actions">
+                                    <span class="date"><i class="far fa-calendar-alt"></i> ${credito.fecha}</span>
+                                    ${getActions(credito)}
+                                </div>
+                            </div>
+                        </div>
+                    `}).join('');
+
+                    // Animar barras de progreso después de renderizar
+                    setTimeout(() => {
+                        document.querySelectorAll('.progress-fill').forEach(el => {
+                            const width = el.style.width;
+                            el.style.width = '0%';
+                            setTimeout(() => {
+                                el.style.width = width;
+                            }, 100);
+                        });
+                    }, 200);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                creditosList.innerHTML = `
+                    <div style="text-align:center;padding:40px;color:#ff6b7a;">
+                        <i class="fas fa-exclamation-circle" style="font-size:24px;display:block;margin-bottom:12px;"></i>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Funciones globales
+        window.aprobarCredito = async function(id) {
+            const result = await Swal.fire({
+                title: '¿Aprobar crédito?',
+                text: 'El crédito será aprobado y podrá ser desembolsado.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, aprobar',
+                cancelButtonText: 'Cancelar'
+            });
+            if (!result.isConfirmed) return;
+            try {
+                await fetch(`/core-creditos/${id}/aprobar`, { method: 'POST' });
+                Swal.fire('¡Aprobado!', 'El crédito ha sido aprobado.', 'success');
+                loadCreditos(searchInput.value);
+                loadStats();
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        };
+
+        window.rechazarCredito = async function(id) {
+            const result = await Swal.fire({
+                title: '¿Rechazar crédito?',
+                text: 'El crédito será rechazado.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, rechazar',
+                cancelButtonText: 'Cancelar'
+            });
+            if (!result.isConfirmed) return;
+            try {
+                await fetch(`/core-creditos/${id}/rechazar`, { method: 'POST' });
+                Swal.fire('¡Rechazado!', 'El crédito ha sido rechazado.', 'success');
+                loadCreditos(searchInput.value);
+                loadStats();
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        };
+
+        window.desembolsarCredito = async function(id) {
+            const result = await Swal.fire({
+                title: '¿Desembolsar crédito?',
+                text: 'El monto será depositado en la cuenta del cliente.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, desembolsar',
+                cancelButtonText: 'Cancelar'
+            });
+            if (!result.isConfirmed) return;
+            try {
+                await fetch(`/core-creditos/${id}/desembolsar`, { method: 'POST' });
+                Swal.fire('¡Desembolsado!', 'El crédito ha sido desembolsado.', 'success');
+                loadCreditos(searchInput.value);
+                loadStats();
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        };
+
+        // Eventos
+        searchInput.addEventListener('input', function() {
+            loadCreditos(this.value);
+        });
+
+        refreshBtn.addEventListener('click', function() {
+            loadCreditos(searchInput.value);
+            loadStats();
+            this.querySelector('i').classList.add('fa-spin');
+            setTimeout(() => {
+                this.querySelector('i').classList.remove('fa-spin');
+            }, 1000);
+        });
+
+        // Inicializar
+        loadCreditos();
+        loadStats();
+
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagos | Panel Administrativo</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="icon" type="image/png" href="/img/Logo.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <div class="admin-container">
+
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="/img/caja-huancayo-logo-png_secretos.png" alt="CMAC Huancayo" class="logo" />
+                <span class="brand-text">Panel Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/clientes" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="/core-creditos" class="nav-item">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Créditos</span>
+                </a>
+                <a href="/transferencias-admin" class="nav-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transferencias</span>
+                </a>
+                <a href="/pagos-admin" class="nav-item active">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Pagos</span>
+                </a>
+                <a href="/configuracion" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="header">
+                <div class="header-left">
+                    <h1>Pagos de Servicios</h1>
+                    <p class="header-subtitle">Monitorea todos los pagos realizados</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <span class="admin-name">{{ admin_nombre }}</span>
+                        <span class="admin-role">{{ admin_rol }}</span>
+                    </div>
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="stats-grid-premium" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="stat-card-premium blue">
+                    <div class="stat-icon-wrapper"><i class="fas fa-file-invoice"></i></div>
+                    <div class="stat-number" id="totalPagos">0</div>
+                    <div class="stat-label">Total Pagos</div>
+                    <div class="stat-trend"><i class="fas fa-file-invoice"></i></div>
+                </div>
+                <div class="stat-card-premium green">
+                    <div class="stat-icon-wrapper"><i class="fas fa-arrow-up"></i></div>
+                    <div class="stat-number" id="montoTotal">S/ 0</div>
+                    <div class="stat-label">Monto Total</div>
+                    <div class="stat-trend"><i class="fas fa-arrow-up"></i></div>
+                </div>
+            </div>
+
+            <div id="pagosList">
+                <div class="loading-premium">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Cargando pagos...
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/admin.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const list = document.getElementById('pagosList');
+        const totalEl = document.getElementById('totalPagos');
+        const montoTotalEl = document.getElementById('montoTotal');
+
+        function getInitials(nombre) {
+            return nombre ? nombre.charAt(0).toUpperCase() : '?';
+        }
+
+        async function loadPagos() {
+            try {
+                const response = await fetch('/api/pagos');
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Error al cargar pagos');
+                }
+
+                const pagos = result.data;
+
+                totalEl.textContent = pagos.length;
+                
+                let montoTotal = 0;
+                pagos.forEach(p => montoTotal += parseFloat(p.monto));
+                montoTotalEl.textContent = `S/ ${montoTotal.toFixed(2)}`;
+
+                if (pagos.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-premium">
+                            <i class="fas fa-inbox"></i>
+                            <p>No hay pagos registrados</p>
+                        </div>
+                    `;
+                } else {
+                    list.innerHTML = pagos.map(p => `
+                        <div class="pago-card-premium">
+                            <div class="card-top">
+                                <div class="user-info">
+                                    <div class="user-avatar">${getInitials(p.cliente_nombre)}</div>
+                                    <div>
+                                        <div class="user-name">${p.cliente_nombre || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                <span class="service-tag"><i class="fas fa-tag"></i> ${p.servicio}</span>
+                                <span class="amount">-S/ ${p.monto}</span>
+                            </div>
+                            <div class="card-bottom">
+                                <div>
+                                    <div class="info-label">Código de Cliente</div>
+                                    <div class="info-value">${p.codigo_cliente}</div>
+                                </div>
+                                <span class="date"><i class="far fa-calendar-alt"></i> ${p.fecha}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                list.innerHTML = `
+                    <div style="text-align:center;padding:40px;color:#ff6b7a;">
+                        <i class="fas fa-exclamation-circle" style="font-size:24px;display:block;margin-bottom:12px;"></i>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        loadPagos();
+
+    });
+    </script>
+</body>
+</html>

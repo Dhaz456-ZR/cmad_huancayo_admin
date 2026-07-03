@@ -1,197 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Configuración | CMAC Huancayo</title>
-
-<link rel="stylesheet" href="/css/configuracion.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración | Panel Administrativo</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="icon" type="image/png" href="/img/Logo.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-
 <body>
 
-<div class="dashboard">
+    <div class="admin-container">
 
-    <aside class="sidebar">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="/img/caja-huancayo-logo-png_secretos.png" alt="CMAC Huancayo" class="logo" />
+                <span class="brand-text">Panel Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard" class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/clientes" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="/core-creditos" class="nav-item">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Créditos</span>
+                </a>
+                <a href="/transferencias-admin" class="nav-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transferencias</span>
+                </a>
+                <a href="/pagos-admin" class="nav-item">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Pagos</span>
+                </a>
+                <a href="/configuracion" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
 
-        <div class="logo-section">
+        <main class="main-content">
 
-            <img
-            src="/img/caja-huancayo-logo-png_seeklogo-437667.png"
-            class="logo">
+            <header class="header">
+                <div class="header-left">
+                    <h1>Configuración</h1>
+                    <p class="header-subtitle">Administra la configuración del sistema</p>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <span class="admin-name">{{ admin_nombre }}</span>
+                        <span class="admin-role">{{ admin_rol }}</span>
+                    </div>
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
 
-        </div>
+            <div class="config-grid">
+                <div class="config-card">
+                    <div class="config-icon"><i class="fas fa-user-cog"></i></div>
+                    <h3>Mi Perfil</h3>
+                    <p>Actualiza tu información personal</p>
+                    <button class="btn-config" onclick="Swal.fire('Info', 'Función en desarrollo', 'info')">
+                        <i class="fas fa-edit"></i> Editar Perfil
+                    </button>
+                </div>
 
-        <nav>
+                <div class="config-card">
+                    <div class="config-icon" style="color:#22c55e;"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Seguridad</h3>
+                    <p>Cambia tu contraseña y configuración de seguridad</p>
+                    <button class="btn-config" onclick="Swal.fire('Info', 'Función en desarrollo', 'info')">
+                        <i class="fas fa-lock"></i> Cambiar Contraseña
+                    </button>
+                </div>
 
-            <a href="/admin">
-                <i class="fas fa-chart-line"></i>
-                Dashboard
-            </a>
+                <div class="config-card">
+                    <div class="config-icon" style="color:#f59e0b;"><i class="fas fa-database"></i></div>
+                    <h3>Sistema</h3>
+                    <p>Configuración general del sistema</p>
+                    <button class="btn-config" onclick="Swal.fire('Info', 'Función en desarrollo', 'info')">
+                        <i class="fas fa-cog"></i> Configurar Sistema
+                    </button>
+                </div>
 
-            <a href="/core-creditos">
-                <i class="fas fa-landmark"></i>
-                Core Créditos
-            </a>
-
-            <a href="/clientes">
-                <i class="fas fa-users"></i>
-                Clientes
-            </a>
-
-            <a href="/operaciones">
-                <i class="fas fa-money-check-dollar"></i>
-                Operaciones
-            </a>
-
-            <a href="/reportes">
-                <i class="fas fa-file-lines"></i>
-                Reportes
-            </a>
-
-            <a href="/configuracion" class="active">
-                <i class="fas fa-gear"></i>
-                Configuración
-            </a>
-
-        </nav>
-
-    </aside>
-
-    <main class="main-content">
-
-        <header class="header">
-
-            <div>
-
-                <h1>Configuración del Sistema</h1>
-
-                <p>
-                    Administración general de la plataforma
-                </p>
-
+                <div class="config-card">
+                    <div class="config-icon" style="color:#3b82f6;"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h3>Respaldo</h3>
+                    <p>Gestiona los respaldos de la base de datos</p>
+                    <button class="btn-config" onclick="Swal.fire('Info', 'Función en desarrollo', 'info')">
+                        <i class="fas fa-download"></i> Respaldo
+                    </button>
+                </div>
             </div>
 
-        </header>
-
-        <section class="cards">
-
-            <div class="card">
-
-                <i class="fas fa-database"></i>
-
-                <h3>MySQL</h3>
-
-                <strong>Conectado</strong>
-
+            <div class="system-info">
+                <h3><i class="fas fa-info-circle"></i> Información del Sistema</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Versión</span>
+                        <span class="info-value">v2.0.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Base de Datos</span>
+                        <span class="info-value">MySQL</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Entorno</span>
+                        <span class="info-value">Producción</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Última Actualización</span>
+                        <span class="info-value">03/07/2026</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
+        </main>
+    </div>
 
-                <i class="fas fa-server"></i>
-
-                <h3>PostgreSQL</h3>
-
-                <strong>Conectado</strong>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-users"></i>
-
-                <h3>Usuarios</h3>
-
-                <strong>{{ total_clientes }}</strong>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-file-signature"></i>
-
-                <h3>Créditos</h3>
-
-                <strong>{{ total_creditos }}</strong>
-
-            </div>
-
-        </section>
-
-        <section class="config-box">
-
-            <h2>Herramientas Administrativas</h2>
-
-            <div class="buttons">
-
-                <button id="themeBtn">
-                    🌙 Cambiar Tema
-                </button>
-
-                <button id="syncBtn">
-                    🔄 Sincronizar PostgreSQL
-                </button>
-
-                <button id="backupBtn">
-                    💾 Crear Backup
-                </button>
-
-                <button id="refreshBtn">
-                    ♻ Actualizar Sistema
-                </button>
-
-            </div>
-
-        </section>
-
-        <section class="server-box">
-
-            <h2>Información del Sistema</h2>
-
-            <table>
-
-                <tr>
-                    <td>Versión</td>
-                    <td>CMAD 1.0</td>
-                </tr>
-
-                <tr>
-                    <td>Estado</td>
-                    <td>Activo</td>
-                </tr>
-
-                <tr>
-                    <td>Servidor</td>
-                    <td>FastAPI</td>
-                </tr>
-
-                <tr>
-                    <td>Base Principal</td>
-                    <td>MySQL</td>
-                </tr>
-
-                <tr>
-                    <td>Base Alterna</td>
-                    <td>PostgreSQL</td>
-                </tr>
-
-            </table>
-
-        </section>
-
-    </main>
-
-</div>
-
-<script src="/js/configuracion.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/admin.js"></script>
 </body>
-
 </html>
